@@ -36,3 +36,28 @@ Set your environment variables in the `.env` file Like `OPENAI_API_KEY` value.
 ```bash
 $  uvicorn main:app --reload --host 0.0.0.0 --port 5000
 ```
+## Run Docker Compose Services
+
+Start MongoDB from the repository root:
+
+```bash
+cp docker/.env.example docker/.env
+```
+
+Set `MONGO_INITDB_ROOT_USERNAME` and `MONGO_INITDB_ROOT_PASSWORD` in `docker/.env`,
+then start MongoDB:
+
+```bash
+cd docker
+docker compose up -d
+docker compose ps
+```
+
+When running the FastAPI app on your machine, set `MONGO_URI` in `src/.env` to
+use the same credentials and the published MongoDB port:
+`mongodb://<username>:<password>@localhost:27008/mini_rag_db?authSource=admin`.
+URL-encode any special characters in the username or password.
+
+Stop MongoDB with `docker compose down` from the `docker` directory. Its data
+remains in the `mongodb_data` Docker volume. The old `docker/mongodb` folder,
+if present, is left untouched.
